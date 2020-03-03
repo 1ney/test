@@ -11,7 +11,8 @@
     <div class="sidebar -pane">
         <h4>Filters:</h4>
 
-        <fieldset name="duration" class="dd"><label class="filter-duration">
+        <fieldset name="duration" class="dd">
+            <label class="filter-duration">
                 <input type="checkbox" v-model="filter" checked="checked"> Check all</label>
             <label class="filter-duration" v-for="duration in durationList"><input type="checkbox" v-model="activeFilters" :value="duration.duration">{{duration.caption}}</label>
         </fieldset>
@@ -40,7 +41,7 @@
                     <div class="grid__ _col-2">
                         <div class="col">
                             <table>
-                                <tr v-for="fees in single.fees">
+                                <tr v-for="fees in single.fees" :class="highlight(fees.duration_i)">
                                     <td>{{ fees.duration }}</td>
                                     <td>{{ costs(fees) }}</td>
                                 </tr>
@@ -102,8 +103,8 @@ export default {
 
         filter: {
             get: function() {
+                this.filterProjects(this.activeFilters);
                 return this.activeFilters ? this.activeFilters.length == this.durationList.length : false;
-                //this.filterProjects(this.activeFilters);
             },
             set: function(value) {
                 var activeFilters = [];
@@ -117,6 +118,14 @@ export default {
     },
 
     methods: {
+
+        highlight(item){
+            let status
+            if(this.activeFilters.indexOf(item) > -1) status = 'active'
+
+            return status
+        },
+
         filterProjects(filters) {
             let data = this.$store.state.projects
 
