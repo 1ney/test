@@ -1,7 +1,6 @@
 <template>
-<div class="wrap">
-
-    {{ activeFiltersDuration }}
+<div class="wrap" v-if="this.$store.state.isloaded">
+    <!-- placeholder for loading screen -->
 
     <pre style="position:fixed; background: rgba(0,0,0,.9); padding:20px; right:10px; top:10px; color:lime; width:360px; overflow:scroll">
 <button type="button" @click="loadDurationsUI()" name="button">Log duration</button>
@@ -14,7 +13,7 @@
 
         <fieldset name="duration" class="dd"><label class="filter-duration">
                 <input type="checkbox" v-model="selectAll" checked="checked"> Any duration</label>
-            <label class="filter-duration" v-for="duration in durationList"><input type="checkbox" v-model="activeFiltersDuration" :value="duration.duration">{{duration.caption}}</label>
+            <label class="filter-duration" v-for="duration in durationList"><input type="checkbox" v-model="activeFilters" :value="duration.duration">{{duration.caption}}</label>
         </fieldset>
 
         <h4>Currency:</h4>
@@ -34,7 +33,7 @@
                 <h3><img :src="'/assets/img/flags/' + country.country_code + '.svg'" alt="" class="flag"> {{ country.name }}</h3>
 
                 <div v-for="single in country.projects" class="">
-                    <h4 v-if="single.project_name">{{single.project_name}}</h4>
+                    <h4 v-if="single.project_name">{{ single.project_name }}</h4>
 
                     <b>Fees:</b>
 
@@ -67,11 +66,7 @@
                     </div>
                 </div>
             </dt>
-
-            <dd>
-            </dd>
         </dl>
-
     </div>
 </div>
 </template>
@@ -82,39 +77,40 @@ export default {
     data() {
         return {
             currency: 'USD',
-            activeFiltersDuration: []
+            activeFilters: []
         }
     },
 
     computed: {
         countries: function() {
-            return this.$store.state.projects
+            return this.filterProjects()
         },
         filteredProjects: function() {
             //filter
         },
         durationList: function() {
-            return this.getduration()
+            return this.$store.state.durations
         },
 
         selectAll: {
             get: function() {
-                return this.activeFiltersDuration ? this.activeFiltersDuration.length == this.durationList.length : false;
+                return this.activeFilters ? this.activeFilters.length == this.durationList.length : false;
             },
             set: function(value) {
-                var activeFiltersDuration = [];
+                var activeFilters = [];
                 if (value) {
                     this.durationList.forEach(function(s) {
-                        activeFiltersDuration.push(s.duration);
+                        activeFilters.push(s.duration);
                     });
                 }
-                this.activeFiltersDuration = activeFiltersDuration;
+                this.activeFilters = activeFilters;
             }
         }
     },
 
 
     methods: {
+
         checkDuration(country) {
             let dur = {}
             let arr = []
@@ -131,36 +127,16 @@ export default {
             return true
         },
 
-        getduration: function() {
-            let dur = {}
-            let arr = []
-
-            this.countries.map(el => { //thows error
-                el.projects.map(child => {
-                    child.fees.map(fees => {
-                        dur = {
-                            duration: fees.duration_i,
-                            caption: fees.duration
-                        }
-                        const found = arr.some(el => el.duration == dur.duration);
-                        if (!found) arr.push(dur);
-                    });
-                });
-
-            })
-
-            arr.sort((a, b) => (a.duration > b.duration) ? 1 : -1)
-            console.log(arr);
-            return arr;
-        },
-
         loadDurationsUI() {
             //select all checkboxes
-            this.activeFiltersDuration =[]
-            this.durationList.map(el => {
-                this.activeFiltersDuration.push(el.duration)
+            this.activeFilters = []
+            this.$store.state.durations.map(el => {
+                this.activeFilters.push(el)
             })
-            alert(activeFiltersDuration)
+        },
+
+        filterProjects(){
+            return this.$store.state.projects
         },
 
         costs: function(i) {
@@ -174,9 +150,14 @@ export default {
 
     beforeMount() {
         this.$store.dispatch('getprojects')
+            .then(resp => {
+                console.log('loaded')
+            })
     },
-    mounted(){
+    async mounted() {
+        await this.$store.state.projects
+        this.loadDurationsUI()
         console.log('mounted');
-        this.loadDurationsUI()}
+    }
 }
 </script>
