@@ -1,0 +1,55 @@
+@import 'vars.less';
+@fieldPadding: 6px 12px;
+fieldset{border:none; padding: 0;}
+input {
+    &[type="text"],
+    &[type="password"],
+    &[type="email"],
+    &[type="number"],
+    &[type="password"],
+    &[type="search"],
+    &[type="tel"],
+    &[type="url"],
+    &[type="date"],
+    &[type="datetime"],
+    &[type="month"],
+    &[type="week"],
+    &[type="time"],
+    &[type="file"],
+    &[type="address"]
+     {
+         font-size: 20px;
+        padding: @fieldPadding;
+        width: 100%;
+        border-radius: 4px; border: 1px solid #CCD4E0;
+        box-shadow: 0px 0px 6px rgba(81, 95, 152, 0.161);
+        &:active,
+        &:hover {}
+    }
+    &[type="color"] {
+        height: 30px;
+        padding: 2px;
+    }
+}
+select {
+    padding: @fieldPadding;
+    width: 50%;
+}
+textarea {
+    padding: @fieldPadding;
+    width: 100%; max-width: 100%;
+    border: 2px solid #000000;
+}
+
+.navbar{text-align: right;}
+
+#filters{
+  text-align: right;
+  max-width: 1380px;
+  input[type="radio"]{display: none;
+  &:checked + label{
+    color: red;
+  }
+  }
+
+}

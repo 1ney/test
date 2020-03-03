@@ -1,0 +1,36 @@
+/* Breakpoints */
+@highdensity: ~"only screen and (-webkit-min-device-pixel-ratio: 1.5)", ~"only screen and (min--moz-device-pixel-ratio: 1.5)", ~"only screen and (-o-min-device-pixel-ratio: 3/2)", ~"only screen and (min-device-pixel-ratio: 1.5)";
+@mobile: ~"screen and (max-width: 481px)"; //mobile viewport breakpoint with scaling down to below 300px
+@tablet: ~"screen and (max-width: 949px)"; //tablet breakpoint
+@desktop: ~"screen and (max-width: 1270px)"; //regular desktop
+@desktop-xl: ~"screen and (max-width: 1520px)"; //HD ans laptops screens
+@menuBreakpoint: ~"screen and (max-width: 1220px)"; //making sure that menu doesn't break anything, planning to add script later
+
+@maxDefaultWidth: 1482px;
+@condensedColDiff: 400; //condensed col - used for narrow grid
+@minTabletWidth: 100vw; ////min body width for tablet viewport
+@minMobileWidth: 100vw; //workaround, need to use JS for initial-scale;
+//Colors
+@brandPrimary: #0F202F; //primary brand color - for buttons etc
+@brandSecondary: #006699; //secondary brand colors for color accent
+@mainColor: #000;
+@secondaryColor: #006699;
+@supportColor: #000;
+
+@colorActive: #42DDA1;
+@colorHold: #42DDA1;
+
+@colorLight: @mainColor; //color modifier from layer options
+@colorDark: @secondaryColor; //color modifier from layer options
+@borderRradius: 0; //global border radius
+//Typography
+// all text units are EM
+// these variable allow to adjust responsive text sizes depending on viewport
+@bodyFontSizeDesktop: 14px;
+@bodyFontSizeTablet: 14px;
+@bodyFontSizeMobile: 13px;
+@innerPadding: 0px 5%; //paddings for grid inners
+@innerPaddingWithBg: @sectionGutter 5%; //paddings for grid inners
+//gutter
+@colGutter: 10px; //global gutter
+@sectionGutter: 88px; //section to section gutter, logic is in grid.less

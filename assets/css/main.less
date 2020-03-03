@@ -1,0 +1,118 @@
+@import (less) 'inc/vars.less'; //*Mogul Framework mk.2
+@import (less) 'inc/reset.less'; // reset stuff
+@import (less) 'inc/nav.less'; // nav stuff
+@import (less) 'inc/typo.less'; // nav stuff
+@import (less) 'inc/forms.less'; // nav stuff
+@import (less) 'inc/grid.less';
+@import (less) 'inc/mixins.less';
+@import (less) 'inc/buttons.less'; //@import (css) '../fonts.css'; // nav stuff
+@import (css) 'fontello.css'; //@import (css) '../fonts.css'; // nav stuff
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap');
+
+body,
+html {
+        background: #f7f7f7;
+    font: @bodyFontSizeDesktop/1.8'Source Sans Pro', sans-serif;
+    @media @tablet {
+        width: @minTabletWidth;
+        font-size: @bodyFontSizeTablet;
+    }
+    @media @mobile {
+        & {
+            width: @minMobileWidth;
+            font-size: @bodyFontSizeMobile;
+        }
+    }
+}
+/* ========================================================================== */
+main {
+    padding: 40px 80px;
+}
+
+div {
+    background-repeat: no-repeat;
+    background: none;
+}
+
+label {}
+
+a {
+    transition: color ease 0.2s, background-color ease 0.2s;
+    text-decoration: underline;
+    color: @brandPrimary;
+
+    &:hover {
+        color: lighten(@mainColor, 10%);
+        text-decoration: none;
+    }
+}
+
+img.flag {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    margin-right: 5px;
+    position: relative;
+    bottom: -7px;
+}
+
+.projects {
+    .dt {
+        h3 {
+            line-height: 32px;
+        }
+    }
+}
+
+.content {
+    max-width: 800px;
+}
+
+.country {
+    padding: 20px 40px;
+    margin-bottom: 20px;
+}
+
+.extra-expenses {
+    margin: 20px 0;
+}
+
+.alert {
+    border-width: 1px;
+    border-style: solid;
+    padding: 10px 15px;
+
+    &.-disclaimer {
+        border-color: #39dbff;
+        background: #f0fcff;
+        color: #006699;
+    }
+}
+
+.filter.dd {
+    position: absolute;
+    z-index: 10000;
+    background: #fff;
+    border: none;
+    box-shadow: 1px 1px 3px rgba(0,0,0,.3);
+
+    label {
+        font-size: 12px;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input {
+        position: relative;
+        bottom: -2px;
+    }
+}
+
+
+.sidebar {width:220px; position: sticky; padding: 15px 20px; margin-right: 25px;}
+.projects{max-width: 800px;}
+
+.wrap{display: flex;; flex-direction: row; margin-top: 80px;position: relative;align-items: self-start;}
+.dd .filter-duration{display: block;}
+
+.country h3{margin-bottom: 25px;}

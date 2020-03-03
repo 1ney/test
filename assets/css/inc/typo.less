@@ -1,0 +1,99 @@
+body {
+    line-height: 1.5em;
+}
+h1 + p,
+h2 + p,
+h3 + p,
+h4 + p,
+h5 + p,
+p + p {
+    margin-top: 0;
+}
+h1 {
+  font-size: 50px;
+  line-height: 71px;
+    color: @brandPrimary;
+    font-weight: 500;
+
+}
+h2 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 34px;
+  line-height: 48px;
+  color: @brandPrimary;
+}
+h3 {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 1.25em;
+    font-style: normal;
+font-weight: normal;
+font-size: 30px;
+line-height: 41px;
+}
+h4 {
+    font-size: 1.2em;
+    margin: 0.7em 0;
+}
+h5 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.05em;
+    margin: 10px 0 0;
+    text-transform: uppercase;
+}
+h6 {
+    font-size: 1em;
+    margin: 0.7em 0;
+}
+hr {
+    margin: 2em 0;
+}
+.hgroup {
+    h1,
+    h2,
+    h3,
+    h4 {
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    th {
+        font-weight: bold;
+        border-bottom: 2px solid #ccc;
+        text-align: left;
+        padding: 20px;
+    }
+    tbody {
+        tr {}
+        tr:nth-child(even) {
+            background: #ececec;
+        }
+        td {
+            border-bottom: solid 1px #ccc;
+            padding: 10px 20px;
+        }
+    }
+}
+.hgroup {
+    h1 {
+        & + p {
+            font-size: 1.2em;
+        }
+    }
+    h2 {
+        & + p {
+           //auto subtitle
+        }
+    }
+    h3 {}
+    h4 {}
+    h5 {}
+}

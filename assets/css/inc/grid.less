@@ -1,0 +1,243 @@
+body,
+html {
+    width: 100%;
+}
+section {
+    margin-top: 80px;
+    max-width: 1400px;
+    transition: all ease 1s;
+    box-sizing: border-box;
+    background-size: cover;
+    background-position: center;
+    @media @mobile {}
+    &.layer {
+        margin-top: @sectionGutter;
+
+        @media @mobile{
+                    margin-top: 25px;
+        }
+
+        &.-blank {
+            //margin for layers with no bg
+        }
+
+        &[class*=-bg] {
+            //margin for layers with bg
+            //margin-top: 0;
+
+            > .inner {
+                padding: @innerPaddingWithBg;
+            }
+
+            & + & {
+                margin-top: 0;
+            }
+
+            & + footer{margin-top: 0;}
+        }
+
+        &([class*=-bg])  + &[class*=-bg]{
+                    margin-top: 0;
+        }
+
+        & + section[class*=-bg] {
+            margin-top: @sectionGutter;
+            @media @mobile{
+                        margin-top: 25px;
+            }
+        }
+
+        &.-full-width {
+            &[class*=-bg] {
+                padding: 40px 0;
+            }
+             .inner {
+                max-width: 100%;
+                padding: 0;
+            }
+        }
+    }
+}
+div {
+    box-sizing: border-box;
+}
+footer > .inner,
+section > .inner {
+    max-width: @maxDefaultWidth;
+    margin: 0 auto;
+    padding: @innerPadding;
+    @media @desktop-xl {
+        padding: 0;
+    }
+    @media @tablet {
+        & {
+            padding: @innerPadding;
+        }
+    }
+    @media @mobile {
+        & {
+            padding: 20px;
+        }
+        & > header {
+            margin-left: -@colGutter;
+            margin-right: -@colGutter;
+        }
+    }
+}
+.footer {
+    margin-top: @sectionGutter;
+    @media @mobile{
+                margin-top: 25px;
+    }
+}
+.grid__ {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+//default
+.grid__ > .col {
+    width: 20%;
+    //defaults for bg image
+    &.media {
+        background-size: cover;
+        background-repeat: no-repeat;
+        //aspect ratio for
+        &:empty {
+            //transparent svg with
+            //content: url(test.svg);
+        }
+    }
+}
+/* one item */
+.grid__ > .col:first-child:nth-last-child(1) {
+    width: 100%;
+}
+/* two items */
+.grid__ > .col:first-child:nth-last-child(2),
+.grid__ > .col:first-child:nth-last-child(2) ~ .col {
+    width: 50%;
+}
+/* three items */
+.grid__ > .col:first-child:nth-last-child(3),
+.grid__ > .col:first-child:nth-last-child(3) ~ .col {
+    width: 33.3333%;
+}
+/* four items */
+.grid__ > .col:first-child:nth-last-child(4),
+.grid__ > .col:first-child:nth-last-child(4) ~ .col {
+    width: 25%;
+}
+/* five items */
+.grid__ > .col:first-child:nth-last-child(5),
+.grid__ > .col:first-child:nth-last-child(5) ~ .col {
+    width: 20%;
+}
+.grid__._col-1 > .col {
+    width: 100% !important;
+
+    @media @mobile{
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+}
+.grid__._col-2 > .col {
+    width: 50% !important;
+    @media @tablet {
+        & {
+            width: 50% !important;
+        }
+        &:only-child {
+            width: 100% !important;
+        }
+    }
+    @media @mobile {
+        & {
+            width: 100% !important;
+            order: unset;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+    }
+}
+.grid__._col-3 > .col {
+    width: 33.3333% !important;
+    @media @tablet {
+        & {
+            width: 50% !important;
+        }
+        &:only-child {
+            width: 100% !important;
+        }
+    }
+    @media @mobile {
+        & {
+            width: 100% !important;
+            order: unset;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+    }
+}
+.grid__._col-4 > .col {
+    width: 25% !important;
+    @media @tablet {
+        & {
+            width: 50% !important;
+        }
+        &:only-child {
+            width: 100% !important;
+        }
+    }
+    @media @mobile {
+        & {
+            width: 100% !important;
+            order: unset;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+    }
+}
+.col {
+    padding: @colGutter;
+    @media @tablet {
+        & {
+            width: 50% !important;
+        }
+        &:only-child {
+            width: 100% !important;
+        }
+    }
+    @media @mobile {
+        & {
+            width: 100% !important;
+            order: unset;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+    }
+}
+
+
+.grid__ {
+    margin: 0 -@colGutter;
+}
+.content > *:first-child {
+    margin-top: 0;
+}
+.content > *:last-child {
+    margin-bottom: 0;
+}
+//zeroed gutter for columns
+.grid__.-zero-gutter {
+    margin: 0;
+    .col {
+        padding: 0;
+    }
+}
+//this mod ovverider columns size
+.grid__._override-default {
+    & > .col {
+        width: auto !important;
+    }
+}
