@@ -12,8 +12,6 @@
         <h4>Filters:</h4>
 
         <fieldset name="duration" class="dd">
-            <label class="filter-duration">
-                <input type="checkbox" v-model="filter" checked="checked"> Check all</label>
             <label class="filter-duration" v-for="duration in durationList"><input type="checkbox" v-model="activeFilters" :value="duration.duration">{{duration.caption}}</label>
         </fieldset>
 
@@ -34,37 +32,48 @@
                 <h3><img :src="'/assets/img/flags/' + country.country_code + '.svg'" alt="" class="flag"> {{ country.name }}</h3>
 
                 <div v-for="single in country.projects" class="">
+
                     <h4 v-if="single.project_name">{{ single.project_name }}</h4>
+                    <template v-if='hideProjects(single.fees)'>
+                        <div class="project">
 
-                    <b>Fees:</b>
+                            <b>Fees:</b>
 
-                    <div class="grid__ _col-2">
-                        <div class="col">
-                            <table>
-                                <tr v-for="fees in single.fees" :class="highlight(fees.duration_i)">
-                                    <td>{{ fees.duration }}</td>
-                                    <td>{{ costs(fees) }}</td>
-                                </tr>
-                            </table>
-                        </div>
+                            <div class="grid__ _col-2">
+                                <div class="col">
+                                    <table>
+                                        <tr v-for="fees in single.fees" :class="highlight(fees)">
+                                            <td>{{ fees.duration }}</td>
+                                            <td>{{ costs(fees) }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
 
-                        <div v-if="single.fees_disclaimer.length > 0" class="col">
-                            <div class="alert -disclaimer">
-                                <b>Fees disclaimer:</b> <br />
-                                <div v-for="dicslaimer in single.fees_disclaimer">
-                                    {{ dicslaimer }}
+                                <div v-if="single.fees_disclaimer.length > 0" class="col">
+                                    <div class="alert -disclaimer">
+                                        <b>Fees disclaimer:</b> <br />
+                                        <div v-for="dicslaimer in single.fees_disclaimer">
+                                            {{ dicslaimer }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div v-if="single.extra_expenses" class="extra-expenses">
+                                Extra expenses
+                                <ul>
+                                    <li v-for="expense in single.extra_expenses">
+                                        {{ expense }}
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div v-if="single.extra_expenses" class="extra-expenses">
-                        Extra expenses
-                        <ul>
-                            <li v-for="expense in single.extra_expenses">
-                                {{ expense }}
-                            </li>
-                        </ul>
-                    </div>
+                    </template>
+
+                    <template v-else>
+                    <small>No projects in {{ country.name }} for selected terms.</small>
+                    </template>
+
+
                 </div>
             </dt>
         </dl>
@@ -81,68 +90,87 @@ export default {
     data() {
         return {
             currency: 'USD',
-            activeFilters: [],
-            countries: ''
+            activeFilters: [2 ,4],
         }
     },
 
     computed: {
-        // countries: {
-        //     get() {
-        //         return this.$store.state.projects
-        //     },
-        //     set(filter) {
-        //         return filter
-        //     }
-        // },
+        countries: {
+            get() {
+                return this.$store.state.projects
+            },
+            set(filter) {
+                return filter
+            }
+        },
 
         durationList: function() {
             //generated object with all projects durations
             return this.$store.state.durations
         },
 
-        filter: {
-            get: function() {
-                this.filterProjects(this.activeFilters);
-                return this.activeFilters ? this.activeFilters.length == this.durationList.length : false;
-            },
-            set: function(value) {
-                var activeFilters = [];
-                if (value) {
-                    this.durationList.forEach(function(s) {
-                        activeFilters.push(s.duration);
-                    });
-                }
-            }
-        }
+        //select all filters
+
+        // filter: {
+        //     get: function() {
+        //         //this.filterProjects(this.activeFilters);
+        //         return this.activeFilters ? this.activeFilters.length == this.durationList.length : false;
+        //     },
+        //     set: function(value) {
+        //         var activeFilters = [];
+        //         if (value) {
+        //             this.durationList.forEach(function(s) {
+        //                 activeFilters.push(s.duration);
+        //             });
+        //         }
+        //     }
+        // }
     },
 
     methods: {
 
-        highlight(item){
+        highlight(item) {
             let status
-            if(this.activeFilters.indexOf(item) > -1) status = 'active'
+            if (this.activeFilters.indexOf(item.duration_i) > -1) status = 'active'
 
             return status
         },
 
-        filterProjects(filters) {
-            let data = this.$store.state.projects
+        hideProjects(item) {
+            let status
+            if (this.activeFilters.indexOf(item) > -1) status = 'active'
 
-            let list = data.filter(country => {
-                let res = country.projects.some(({
-                        fees
-                    }) =>
-                    fees.some(({
-                            duration_i
-                        }) =>
-                        this.activeFilters.indexOf(duration_i) > -1))
-                return res
-            })
+            status = item.some(({
+                duration_i
+            }) => this.activeFilters.indexOf(duration_i) > -1)
 
-            this.countries = list
-            console.log('countries: ' + list.map(el => el.name))
+
+            console.log(status);
+
+            return status
+
         },
+
+        //Filter is working but I found more easy solution.
+        //for more filters I'd use filter but for a small app two-way bindings work fine
+
+        // filterProjects(filters) {
+        //     let data = this.$store.state.projects
+        //
+        //     let list = data.filter(country => {
+        //         let res = country.projects.some(({
+        //                 fees
+        //             }) =>
+        //             fees.some(({
+        //                     duration_i
+        //                 }) =>
+        //                 this.activeFilters.indexOf(duration_i) > -1))
+        //         return res
+        //     })
+        //
+        //     this.countries = list
+        //     console.log('countries: ' + list.map(el => el.name))
+        // },
 
         checkDuration(country) {
             let dur = {}
@@ -175,7 +203,7 @@ export default {
             })
     },
     mounted() {
-        this.$store.state.projects
+        //this.$store.state.projects
         console.log('mounted');
     }
 }
