@@ -3,7 +3,7 @@
     <!-- placeholder for loading screen -->
 
     <pre style="position:fixed; background: rgba(0,0,0,.9); padding:20px; right:10px; top:10px; color:lime; width:360px; overflow:scroll">
-<button type="button" @click="loadDurationsUI()" name="button">Log duration</button>
+<button type="button" name="button">Log duration</button>
         <br />
     {{ this.countries[1] }}
     </pre>
@@ -12,7 +12,7 @@
         <h4>Filters:</h4>
 
         <fieldset name="duration" class="dd"><label class="filter-duration">
-                <input type="checkbox" v-model="selectAll" checked="checked"> Any duration</label>
+                <input type="checkbox" v-model="filter" checked="checked"> Check all</label>
             <label class="filter-duration" v-for="duration in durationList"><input type="checkbox" v-model="activeFilters" :value="duration.duration">{{duration.caption}}</label>
         </fieldset>
 
@@ -67,6 +67,9 @@
                 </div>
             </dt>
         </dl>
+        <div class="-pane" v-else>
+            No projects found
+        </div>
     </div>
 </div>
 </template>
@@ -77,24 +80,30 @@ export default {
     data() {
         return {
             currency: 'USD',
-            activeFilters: []
+            activeFilters: [],
+            countries: ''
         }
     },
 
     computed: {
-        countries: function() {
-            return this.filterProjects()
-        },
-        filteredProjects: function() {
-            //filter
-        },
+        // countries: {
+        //     get() {
+        //         return this.$store.state.projects
+        //     },
+        //     set(filter) {
+        //         return filter
+        //     }
+        // },
+
         durationList: function() {
+            //generated object with all projects durations
             return this.$store.state.durations
         },
 
-        selectAll: {
+        filter: {
             get: function() {
                 return this.activeFilters ? this.activeFilters.length == this.durationList.length : false;
+                //this.filterProjects(this.activeFilters);
             },
             set: function(value) {
                 var activeFilters = [];
@@ -103,13 +112,28 @@ export default {
                         activeFilters.push(s.duration);
                     });
                 }
-                this.activeFilters = activeFilters;
             }
         }
     },
 
-
     methods: {
+        filterProjects(filters) {
+            let data = this.$store.state.projects
+
+            let list = data.filter(country => {
+                let res = country.projects.some(({
+                        fees
+                    }) =>
+                    fees.some(({
+                            duration_i
+                        }) =>
+                        this.activeFilters.indexOf(duration_i) > -1))
+                return res
+            })
+
+            this.countries = list
+            console.log('countries: ' + list.map(el => el.name))
+        },
 
         checkDuration(country) {
             let dur = {}
@@ -123,20 +147,7 @@ export default {
                     if (found) return true
                 });
             });
-
             return true
-        },
-
-        loadDurationsUI() {
-            //select all checkboxes
-            this.activeFilters = []
-            this.$store.state.durations.map(el => {
-                this.activeFilters.push(el)
-            })
-        },
-
-        filterProjects(){
-            return this.$store.state.projects
         },
 
         costs: function(i) {
@@ -154,9 +165,8 @@ export default {
                 console.log('loaded')
             })
     },
-    async mounted() {
-        await this.$store.state.projects
-        this.loadDurationsUI()
+    mounted() {
+        this.$store.state.projects
         console.log('mounted');
     }
 }

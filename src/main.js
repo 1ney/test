@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import App from './App.vue'
 import router from './routes';
 
-import { mapGetters, mapActions } from 'vuex'
+//import { mapGetters, mapActions } from 'vuex' transpiler bug, no time to fix
 
 import store from './store'
 import Axios from 'axios'
