@@ -9,7 +9,7 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "clean-css": "^4.2.3",
     "core-js": "^3.6.4",
     "gulp": "^4.0.2",
